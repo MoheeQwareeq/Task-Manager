@@ -1,4 +1,4 @@
-const Tasks = [];
+const Tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 const printMenu = () => {
   console.log("Task Manager Menu:");
@@ -19,6 +19,10 @@ const printTask = (task) => {
   );
 };
 
+const saveTasks = () => {
+  localStorage.setItem("tasks", JSON.stringify(Tasks));
+};
+
 let input;
 let count = 1;
 do {
@@ -32,6 +36,7 @@ do {
       if (task) {
         Tasks.push(task);
         console.log(`Task added: "${task.description}"  `);
+        saveTasks();
       }
       break;
 
@@ -49,6 +54,7 @@ do {
             temp.state ? "Completed" : "Not Completed"
           }]`
         );
+        saveTasks();
       } else console.log("Invalid ID entered.");
       break;
 
@@ -61,6 +67,7 @@ do {
         if (newDescription) {
           temp.description = newDescription;
           console.log(`Task "${temp.id}" updated to ${newDescription}`);
+          saveTasks();
         } else
           console.log("No new description provided. Task was not updated.");
       } else console.log("Invalid ID entered.");
@@ -72,6 +79,7 @@ do {
       if (indexToDelete !== -1) {
         Tasks.splice(indexToDelete, 1);
         console.log(`Task ${idToDelete} deleted successfully.`);
+        saveTasks();
       } else console.log("Invalid ID entered.");
       break;
 
@@ -85,7 +93,6 @@ do {
         console.log("result:");
         result.forEach(printTask);
       } else console.log("No tasks found.");
-
       break;
 
     case 7:
